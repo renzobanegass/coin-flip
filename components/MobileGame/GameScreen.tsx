@@ -128,54 +128,54 @@ export function GameScreen({
   }
 
   return (
-    <div className="min-h-screen bg-slate-900 p-4 text-slate-100">
-      <div className="max-w-sm mx-auto space-y-6 pt-8">
+    <div className="min-h-screen bg-slate-900 p-3 sm:p-4 text-slate-100">
+      <div className="w-full max-w-sm mx-auto space-y-4 sm:space-y-6 pt-6 sm:pt-8">
         
         {/* Header with Balance */}
         <Card className="bg-slate-800 border-slate-700">
-          <CardContent className="p-4">
+          <CardContent className="p-3 sm:p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Wallet className="h-5 w-5" />
-                <span className="text-sm">Balance</span>
+                <Wallet className="h-4 w-4 sm:h-5 sm:w-5" />
+                <span className="text-xs sm:text-sm">Balance</span>
               </div>
-              <div className="text-lg font-bold">{balance} ETH</div>
+              <div className="text-base sm:text-lg font-bold truncate ml-2">{balance} ETH</div>
             </div>
           </CardContent>
         </Card>
 
         {/* Game Status */}
-        <div className="text-center space-y-4">
-          <div className="text-6xl">🪙</div>
-          <h1 className="text-3xl font-bold">Coin Flip</h1>
+        <div className="text-center space-y-3 sm:space-y-4">
+          <div className="text-4xl sm:text-6xl">🪙</div>
+          <h1 className="text-2xl sm:text-3xl font-bold">Coin Flip</h1>
           
           {gamePhase === 'betting' && (
-            <div className="space-y-3">
-              <div className="flex items-center justify-center gap-4 text-2xl font-bold">
-                <div className="flex items-center gap-2">
-                  <DollarSign className="h-6 w-6" />
-                  {totalPot.toFixed(3)} ETH
+            <div className="space-y-2 sm:space-y-3">
+              <div className="flex items-center justify-center gap-2 sm:gap-4 text-lg sm:text-2xl font-bold">
+                <div className="flex items-center gap-1 sm:gap-2">
+                  <DollarSign className="h-5 w-5 sm:h-6 sm:w-6" />
+                  <span className="truncate">{totalPot.toFixed(3)} ETH</span>
                 </div>
               </div>
               
-              <div className="flex items-center justify-center gap-4">
-                <div className="flex items-center gap-2">
-                  <Clock className="h-5 w-5 text-amber-400" />
-                  <span className="text-xl font-mono">{formatTime(timeLeft)}</span>
+              <div className="flex items-center justify-center gap-3 sm:gap-4">
+                <div className="flex items-center gap-1 sm:gap-2">
+                  <Clock className="h-4 w-4 sm:h-5 sm:w-5 text-amber-400" />
+                  <span className="text-lg sm:text-xl font-mono">{formatTime(timeLeft)}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Users className="h-5 w-5 text-blue-400" />
-                  <span className="text-xl">{players.length}</span>
+                <div className="flex items-center gap-1 sm:gap-2">
+                  <Users className="h-4 w-4 sm:h-5 sm:w-5 text-blue-400" />
+                  <span className="text-lg sm:text-xl">{players.length}</span>
                 </div>
               </div>
               
-              <Progress value={((60 - timeLeft) / 60) * 100} className="h-2" />
+              <Progress value={((60 - timeLeft) / 60) * 100} className="h-1.5 sm:h-2" />
             </div>
           )}
 
           {gamePhase === 'flipping' && (
-            <div className="space-y-4">
-              <h2 className="text-2xl font-semibold">Flipping...</h2>
+            <div className="space-y-3 sm:space-y-4">
+              <h2 className="text-xl sm:text-2xl font-semibold">Flipping...</h2>
               <CoinFlip isFlipping={true} />
             </div>
           )}
@@ -183,39 +183,41 @@ export function GameScreen({
 
         {/* Betting Interface */}
         {gamePhase === 'betting' && (
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {!hasEnoughBalance && (
               <Card className="bg-red-900/30 border-red-700">
-                <CardContent className="p-4 text-center">
-                  <p className="text-red-300 font-medium">Insufficient Balance</p>
-                  <p className="text-red-400 text-sm mt-1">
+                <CardContent className="p-3 sm:p-4 text-center">
+                  <p className="text-red-300 font-medium text-sm sm:text-base">Insufficient Balance</p>
+                  <p className="text-red-400 text-xs sm:text-sm mt-1">
                     Need {BET_AMOUNT} ETH to play
                   </p>
                 </CardContent>
               </Card>
             )}
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-2 sm:gap-4">
               <Card className={`relative overflow-hidden border-2 transition-all ${
                 playerChoice === 'heads' 
                   ? 'border-green-500 bg-green-900/30' 
                   : 'border-slate-600 hover:border-blue-500 bg-slate-800'
               }`}>
-                <CardContent className="p-6 text-center">
-                  <div className="text-4xl mb-2">🪙</div>
-                  <h3 className="text-xl font-bold mb-2">HEADS</h3>
-                  <Badge variant="secondary" className="mb-3">
+                <CardContent className="p-3 sm:p-6 text-center">
+                  <div className="text-3xl sm:text-4xl mb-2">🪙</div>
+                  <h3 className="text-lg sm:text-xl font-bold mb-2">HEADS</h3>
+                  <Badge variant="secondary" className="mb-2 sm:mb-3 text-xs sm:text-sm">
                     {headsCount} players
                   </Badge>
                   <Button
                     onClick={() => handleJoin('heads')}
                     disabled={hasJoined || !hasEnoughBalance || isJoining || timeLeft < 5}
-                    className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50"
+                    className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-xs sm:text-sm h-8 sm:h-9"
                     size="sm"
                   >
-                    {hasJoined && playerChoice === 'heads' ? '✓ Joined' : 
-                     isJoining ? 'Joining...' : 
-                     `Join (${BET_AMOUNT} ETH)`}
+                    <span className="truncate">
+                      {hasJoined && playerChoice === 'heads' ? '✓ Joined' : 
+                       isJoining ? 'Joining...' : 
+                       `Join (${BET_AMOUNT})`}
+                    </span>
                   </Button>
                 </CardContent>
               </Card>
@@ -225,21 +227,23 @@ export function GameScreen({
                   ? 'border-green-500 bg-green-900/30' 
                   : 'border-slate-600 hover:border-blue-500 bg-slate-800'
               }`}>
-                <CardContent className="p-6 text-center">
-                  <div className="text-4xl mb-2">🪙</div>
-                  <h3 className="text-xl font-bold mb-2">TAILS</h3>
-                  <Badge variant="secondary" className="mb-3">
+                <CardContent className="p-3 sm:p-6 text-center">
+                  <div className="text-3xl sm:text-4xl mb-2">🪙</div>
+                  <h3 className="text-lg sm:text-xl font-bold mb-2">TAILS</h3>
+                  <Badge variant="secondary" className="mb-2 sm:mb-3 text-xs sm:text-sm">
                     {tailsCount} players
                   </Badge>
                   <Button
                     onClick={() => handleJoin('tails')}
                     disabled={hasJoined || !hasEnoughBalance || isJoining || timeLeft < 5}
-                    className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50"
+                    className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-xs sm:text-sm h-8 sm:h-9"
                     size="sm"
                   >
-                    {hasJoined && playerChoice === 'tails' ? '✓ Joined' : 
-                     isJoining ? 'Joining...' : 
-                     `Join (${BET_AMOUNT} ETH)`}
+                    <span className="truncate">
+                      {hasJoined && playerChoice === 'tails' ? '✓ Joined' : 
+                       isJoining ? 'Joining...' : 
+                       `Join (${BET_AMOUNT})`}
+                    </span>
                   </Button>
                 </CardContent>
               </Card>
@@ -247,8 +251,8 @@ export function GameScreen({
 
             {hasJoined && (
               <Card className="bg-green-900/30 border-green-700">
-                <CardContent className="p-4 text-center">
-                  <p className="text-green-300 font-medium">
+                <CardContent className="p-3 sm:p-4 text-center">
+                  <p className="text-green-300 font-medium text-sm sm:text-base">
                     You chose {playerChoice?.toUpperCase()}! Good luck! 🍀
                   </p>
                 </CardContent>
@@ -257,8 +261,8 @@ export function GameScreen({
 
             {timeLeft < 10 && timeLeft > 0 && (
               <Card className="bg-yellow-900/30 border-yellow-700">
-                <CardContent className="p-4 text-center">
-                  <p className="text-yellow-300 font-medium animate-pulse">
+                <CardContent className="p-3 sm:p-4 text-center">
+                  <p className="text-yellow-300 font-medium animate-pulse text-sm sm:text-base">
                     Betting closes in {timeLeft}s!
                   </p>
                 </CardContent>
@@ -270,8 +274,8 @@ export function GameScreen({
         {/* Game Rules */}
         {gamePhase === 'betting' && !hasJoined && (
           <Card className="bg-slate-800 border-slate-700">
-            <CardContent className="p-4 text-center text-sm text-slate-400">
-              <p>Pick heads or tails • Winners split 95% of pot • 5% protocol fee</p>
+            <CardContent className="p-3 sm:p-4 text-center text-xs sm:text-sm text-slate-400">
+              <p className="break-words">Pick heads or tails • Winners split 95% of pot • 5% protocol fee</p>
             </CardContent>
           </Card>
         )}

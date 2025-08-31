@@ -6,14 +6,14 @@ const appUrl = env.NEXT_PUBLIC_URL;
 
 const frame = {
   version: "next",
-  imageUrl: `${appUrl}/images/feed.png`,
+  imageUrl: `${appUrl}/icon.png`,
   button: {
     title: "Launch App",
     action: {
       type: "launch_frame",
-      name: "Mini-app Starter",
+      name: "Flip the Coin",
       url: appUrl,
-      splashImageUrl: `${appUrl}/images/splash.png`,
+      splashImageUrl: `${appUrl}/icon.png`,
       splashBackgroundColor: "#ffffff",
     },
   },
@@ -21,10 +21,10 @@ const frame = {
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Mini-app Starter",
+    title: "Flip the Coin",
     openGraph: {
-      title: "Mini-app Starter",
-      description: "A starter for Farcastermini-apps",
+      title: "Flip the Coin",
+      description: "Join global rounds of coin flips. Choose heads or tails, pool your stake, and win your share if your side lands. Simple, social, and viral.",
     },
     other: {
       "fc:frame": JSON.stringify(frame),

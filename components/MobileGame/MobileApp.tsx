@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { useSignIn } from "@/hooks/use-sign-in"
 import { useFirstVisit } from "@/hooks/use-first-visit"
+import { useAccount } from "wagmi"
 import { RulesPopup } from "./RulesPopup"
 import { GameScreen } from "./GameScreen"
 import { GameHistory } from "./GameHistory"
@@ -12,12 +13,13 @@ import type { CoinSide } from "@/lib/coin-flip-contract"
 
 export function MobileApp() {
   const { signIn, isLoading, isSignedIn, user } = useSignIn({ autoSignIn: true })
+  const { address } = useAccount()
   const { isFirstVisit, isLoading: isFirstVisitLoading, markAsVisited } = useFirstVisit()
   const [activeTab, setActiveTab] = useState<'game' | 'history' | 'profile'>('game')
   const [balance, setBalance] = useState('0.000')
   const [showRulesPopup, setShowRulesPopup] = useState(false)
 
-  const playerAddress = user?.address || 'anonymous'
+  const playerAddress = address || user?.address
 
   // Show rules popup on first visit
   useEffect(() => {
@@ -87,9 +89,9 @@ export function MobileApp() {
       )}
 
       {activeTab === 'history' && (
-        <div className="p-4 pb-20 pt-8">
-          <div className="max-w-sm mx-auto">
-            <h1 className="text-2xl font-bold text-slate-100 mb-6">Game History</h1>
+        <div className="p-3 sm:p-4 pb-20 pt-6 sm:pt-8">
+          <div className="w-full max-w-sm mx-auto">
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-100 mb-4 sm:mb-6">Game History</h1>
             <GameHistory playerAddress={isSignedIn ? playerAddress : undefined} />
           </div>
         </div>

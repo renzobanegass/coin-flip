@@ -6,7 +6,7 @@ import { env } from "@/lib/env";
  * @returns The farcaster manifest for the frame
  */
 export async function getFarcasterManifest() {
-  let frameName = "Mini-app Starter";
+  let frameName = "Flip the Coin";
   let noindex = false;
   const appUrl = env.NEXT_PUBLIC_URL;
   if (appUrl.includes("localhost")) {
@@ -26,30 +26,28 @@ export async function getFarcasterManifest() {
       signature: env.NEXT_PUBLIC_FARCASTER_SIGNATURE,
     },
     frame: {
-      version: "1",
-      name: frameName,
-      iconUrl: `${appUrl}/images/icon.png`,
-      homeUrl: appUrl,
-      imageUrl: `${appUrl}/images/feed.png`,
-      buttonTitle: `Launch Coin Flip`,
-      splashImageUrl: `${appUrl}/images/splash.png`,
+      version: "1.1",
+      name: "Flip the Coin",
+      iconUrl: "${appUrl}/icon.png",
+      homeUrl: "${appUrl}",
+      imageUrl: "${appUrl}/icon.png",
+      buttonTitle: "Launch Coin Flip",
+      splashImageUrl: "${appUrl}/icon.png",
       splashBackgroundColor: "#FFFFFF",
-      webhookUrl: `${appUrl}/api/webhook`,
-      // Metadata https://github.com/farcasterxyz/miniapps/discussions/191
-      subtitle: "Starter kit for mini-apps", // 30 characters, no emojis or special characters, short description under app name
-      description: "Starter kit for mini-apps", // 170 characters, no emojis or special characters, promotional message displayed on Mini App Page
+      webhookUrl: "${appUrl}/api/webhook",
+      subtitle: "Pick heads or tails", 
+      description: "Join global rounds of coin flips. Choose heads or tails, pool your stake, and win your share if your side lands. Simple, social, and viral.",
       primaryCategory: "social",
-      tags: ["mini-app", "starter"], // up to 5 tags, filtering/search tags
-      tagline: "Starter kit for mini-apps", // 30 characters, marketing tagline should be punchy and descriptive
-      ogTitle: `${frameName}`, // 30 characters, app name + short tag, Title case, no emojis
-      ogDescription: "Starter kit for Farcastermini-apps", // 100 characters, summarize core benefits in 1-2 lines
+      tags: ["coinflip", "game", "social", "crypto", "bets"],
+      tagline: "Win by flipping a coin",
+      ogTitle: "Flip the Coin – Global Rounds",
+      ogDescription: "Stake, flip, and win with people worldwide. Heads or tails, every round is global.",
       screenshotUrls: [
-        // 1284 x 2778, visual previews of the app, max 3 screenshots
-        `${appUrl}/images/feed.png`,
+        "${appUrl}/icon.png"
       ],
-      heroImageUrl: `${appUrl}/images/feed.png`, // 1200 x 630px (1.91:1), promotional display image on top of the mini app store
-      ogImageUrl: `${appUrl}/images/feed.png`, // 1200 x 630px (1.91:1), promotional image, same as app hero image
-      noindex: noindex,
+      heroImageUrl: "${appUrl}/icon.png",
+      ogImageUrl: "${appUrl}/icon.png",
+      noindex: false
     },
   };
 }
