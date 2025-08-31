@@ -5,11 +5,12 @@ A decentralized coin flip game built as a Farcaster Mini App where players can j
 ## Features
 
 - **Global Rounds**: Join timed rounds with other players worldwide
-- **Simple Gameplay**: Choose heads or tails with a $1 buy-in per round
-- **Winner Takes All**: Winners split the prize pool (minus 5% protocol fee)
+- **Simple Gameplay**: Choose heads or tails with a 0.001 ETH buy-in per round
+- **Winner Takes All**: Winners split the prize pool
 - **Real-time Updates**: Live countdown timers and player statistics
 - **Social Integration**: Built for Farcaster with sharing capabilities
-- **Mobile-First**: Optimized for mobile devices with touch interactions
+- **Mobile-First**: Responsive design optimized for mobile devices with touch interactions
+- **Blockchain Integration**: Smart contract deployment with Foundry framework
 
 ## How It Works
 
@@ -23,22 +24,34 @@ A decentralized coin flip game built as a Farcaster Mini App where players can j
 - **Frontend**: Next.js 15, React 19, TypeScript
 - **Styling**: Tailwind CSS with custom components
 - **UI Components**: Radix UI primitives with shadcn/ui
-- **Blockchain**: Base network (currently mock implementation)
-- **Authentication**: Farcaster authentication
+- **Blockchain**: Solidity smart contracts with Foundry framework
+- **Network**: Base network integration
+- **Authentication**: Farcaster authentication via Frame SDK
 - **Wallet**: Coinbase OnchainKit integration
+- **State Management**: React hooks with Tanstack Query
+- **Deployment**: Vercel
 
 ## Project Structure
 
 ```
 ├── app/                    # Next.js app router
+│   ├── api/               # API routes for authentication and OG images
+│   └── .well-known/       # Farcaster manifest
 ├── components/
 │   ├── CoinFlip/          # Game components
-│   ├── ui/                # Reusable UI components
+│   ├── ui/                # Reusable UI components (shadcn/ui)
 │   └── Home/              # Main game interface
+├── contracts/             # Solidity smart contracts
+│   ├── src/               # Contract source files
+│   ├── test/              # Contract tests
+│   └── script/            # Deployment scripts
+├── contexts/              # React contexts (MiniApp)
 ├── hooks/                 # React hooks for game logic
 ├── lib/                   # Utilities and core logic
-│   ├── coin-flip-contract.ts  # Mock smart contract
-│   └── env.ts             # Environment configuration
+│   ├── coin-flip-contract.ts  # Mock contract for development
+│   ├── env.ts             # Environment configuration
+│   └── warpcast.ts        # Farcaster integration
+├── public/                # Static assets
 └── styles/                # Global styles
 ```
 
@@ -77,22 +90,29 @@ Open [http://localhost:3000](http://localhost:3000) to see the application.
 
 ### Available Scripts
 
+**Frontend:**
 - `pnpm dev` - Start development server
 - `pnpm build` - Build for production
 - `pnpm start` - Start production server
 - `pnpm lint` - Run ESLint
 
+**Smart Contracts (Foundry):**
+- `forge build` - Compile contracts
+- `forge test` - Run contract tests
+- `forge deploy` - Deploy contracts
+
 ## Game Mechanics
 
 - **Round Duration**: 60 seconds per round
-- **Buy-in**: $1 ETH per player
-- **Protocol Fee**: 5% of total pot
-- **Payout**: Winners split remaining 95% of pot equally
+- **Buy-in**: 0.001 ETH per player
+- **Teams**: Players choose between heads (team 1) or tails (team 2)
+- **Payout**: Winners split the entire pot equally
+- **Resolution**: Rounds resolve automatically using block-based randomness
 - **Auto-Resolution**: Rounds resolve automatically when timer expires
 
-## Mock Implementation
+## Smart Contract
 
-Currently uses a mock smart contract (`lib/coin-flip-contract.ts`) for development and testing. In production, this would be replaced with actual Web3 contract calls on Base network.
+The game includes a Solidity smart contract (`contracts/src/Coinflip.sol`) deployed with Foundry framework. For development and testing, a mock implementation (`lib/coin-flip-contract.ts`) is used to simulate contract behavior without requiring blockchain transactions.
 
 ## Contributing
 
