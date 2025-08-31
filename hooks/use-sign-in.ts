@@ -52,7 +52,7 @@ export const useSignIn = ({ autoSignIn = false }: { autoSignIn?: boolean }) => {
         throw new Error("Sign in failed")
       }
 
-      const mockUser: NeynarUser = {
+      const mockUser: User = {
         fid: context.user.fid.toString(),
         username: `user${context.user.fid}`,
         display_name: `User ${context.user.fid}`,

@@ -20,9 +20,10 @@ export function useWallet() {
     checkBalance()
   }, [])
 
-  // Get user's wallet address from Farcaster custody address
+  // Get user's wallet address (mock for now)
   const getWalletAddress = useCallback(() => {
-    return context?.user?.custody_address || "0x1234567890123456789012345678901234567890"
+    // Mock address since MiniKit context doesn't expose wallet address directly
+    return "0x1234567890123456789012345678901234567890"
   }, [context])
 
   // Mock balance check (in production, use actual RPC calls)

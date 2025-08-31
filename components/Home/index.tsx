@@ -11,7 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useCoinFlip } from "@/hooks/use-coin-flip"
 import { useWallet } from "@/hooks/use-wallet"
 import { Clock, DollarSign, Users, Wallet } from "lucide-react"
-import type { CoinSide } from "@/lib/coin-flip-contract"
+import { coinFlipContract, type CoinSide } from "@/lib/coin-flip-contract"
 
 export default function Home() {
   const { signIn, isLoading, isSignedIn, user } = useSignIn({
@@ -71,7 +71,7 @@ export default function Home() {
 
     setLastResult({
       result: mockResult,
-      playerChoice,
+      playerChoice: playerChoice ?? undefined,
       isWinner,
       payout: mockPayout,
       totalPot: currentRound?.pot || 0,
@@ -283,7 +283,7 @@ export default function Home() {
               <div className="flex items-center gap-2">
                 <Users className="h-4 w-4" />
                 <div>
-                  <div className="font-medium">{user.display_name}</div>
+                  <div className="font-medium">{user?.display_name || 'Anonymous'}</div>
                   <div className="text-xs">
                     {playerStats.wins}W - {playerStats.losses}L
                   </div>

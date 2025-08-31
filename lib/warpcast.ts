@@ -31,7 +31,7 @@ export async function getFarcasterManifest() {
       iconUrl: `${appUrl}/images/icon.png`,
       homeUrl: appUrl,
       imageUrl: `${appUrl}/images/feed.png`,
-      buttonTitle: `Launch App`,
+      buttonTitle: `Launch Coin Flip`,
       splashImageUrl: `${appUrl}/images/splash.png`,
       splashBackgroundColor: "#FFFFFF",
       webhookUrl: `${appUrl}/api/webhook`,
