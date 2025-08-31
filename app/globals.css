@@ -80,6 +80,15 @@
 body {
   color: hsl(var(--foreground));
   background: hsl(var(--background));
+  /* Prevent scroll bounce on Mac and iOS */
+  overscroll-behavior: none;
+  overscroll-behavior-y: none;
+}
+
+/* Additional fix for iOS Safari */
+html {
+  overscroll-behavior: none;
+  overscroll-behavior-y: none;
 }
 
 @layer utilities {

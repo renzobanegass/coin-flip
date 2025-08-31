@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 import { base } from "viem/chains";
 
 const ErudaProvider = dynamic(
-  () => import("../components/Eruda").then((c) => c.ErudaProvider),
+  () => import("./Eruda").then((c) => c.ErudaProvider),
   { ssr: false }
 );
 
@@ -16,7 +16,6 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     <ErudaProvider>
       <MiniKitProvider
         projectId={env.NEXT_PUBLIC_MINIKIT_PROJECT_ID}
-        notificationProxyUrl="/api/notification"
         chain={base}
       >
         <MiniAppProvider>{children}</MiniAppProvider>

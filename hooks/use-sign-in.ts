@@ -2,6 +2,7 @@
 
 import { MESSAGE_EXPIRATION_TIME } from "@/lib/constants"
 import { useAuthenticate, useMiniKit } from "@coinbase/onchainkit/minikit"
+import { useAccount } from "wagmi"
 import { useCallback, useEffect, useState } from "react"
 
 interface User {
@@ -9,13 +10,14 @@ interface User {
   username: string
   display_name: string
   pfp_url: string
-  custody_address: string
+  address: string
   verifications: string[]
 }
 
 export const useSignIn = ({ autoSignIn = false }: { autoSignIn?: boolean }) => {
   const { context } = useMiniKit()
   const { signIn } = useAuthenticate()
+  const { address, isConnected } = useAccount()
   const [user, setUser] = useState<User | null>(null)
   const [isSignedIn, setIsSignedIn] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -33,7 +35,7 @@ export const useSignIn = ({ autoSignIn = false }: { autoSignIn?: boolean }) => {
           username: "mockuser",
           display_name: "Mock User",
           pfp_url: "/images/icon.png",
-          custody_address: "0x1234567890123456789012345678901234567890",
+          address: address || "0x1234567890123456789012345678901234567890",
           verifications: [],
         }
 
@@ -52,18 +54,18 @@ export const useSignIn = ({ autoSignIn = false }: { autoSignIn?: boolean }) => {
         throw new Error("Sign in failed")
       }
 
-      const mockUser: User = {
+      const userData: User = {
         fid: context.user.fid.toString(),
-        username: `user${context.user.fid}`,
-        display_name: `User ${context.user.fid}`,
-        pfp_url: "/images/icon.png",
-        custody_address: "0x1234567890123456789012345678901234567890",
+        username: context.user.username || `user${context.user.fid}`,
+        display_name: context.user.displayName || `User ${context.user.fid}`,
+        pfp_url: context.user.pfpUrl || "/images/icon.png",
+        address: address || "0x1234567890123456789012345678901234567890",
         verifications: [],
       }
 
-      setUser(mockUser)
+      setUser(userData)
       setIsSignedIn(true)
-      return { user: mockUser }
+      return { user: userData }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Sign in failed"
       setError(errorMessage)
