@@ -1,14 +1,22 @@
 "use client"
 
 import { MESSAGE_EXPIRATION_TIME } from "@/lib/constants"
-import type { NeynarUser } from "@/lib/neynar"
 import { useAuthenticate, useMiniKit } from "@coinbase/onchainkit/minikit"
 import { useCallback, useEffect, useState } from "react"
+
+interface User {
+  fid: string
+  username: string
+  display_name: string
+  pfp_url: string
+  custody_address: string
+  verifications: string[]
+}
 
 export const useSignIn = ({ autoSignIn = false }: { autoSignIn?: boolean }) => {
   const { context } = useMiniKit()
   const { signIn } = useAuthenticate()
-  const [user, setUser] = useState<NeynarUser | null>(null)
+  const [user, setUser] = useState<User | null>(null)
   const [isSignedIn, setIsSignedIn] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -20,7 +28,7 @@ export const useSignIn = ({ autoSignIn = false }: { autoSignIn?: boolean }) => {
 
       if (!context || !context.user) {
         // Create a mock user when context is not available (development mode)
-        const mockUser: NeynarUser = {
+        const mockUser: User = {
           fid: "12345",
           username: "mockuser",
           display_name: "Mock User",

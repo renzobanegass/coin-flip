@@ -22,16 +22,24 @@ export function useCoinFlip(playerAddress?: string) {
     setCurrentRound(round)
     setTimeRemaining(remaining)
 
+    // Handle phase transitions
     if (remaining > 0) {
       setGamePhase("betting")
     } else if (remaining === 0 && gamePhase === "betting") {
+      // Timer hit 0, start flipping phase
       setGamePhase("flipping")
+      
+      // Resolve the round and get results
+      const roundResult = coinFlipContract.resolveRound()
+      
+      // Show flipping animation for 3 seconds, then show results
       setTimeout(() => {
         setGamePhase("results")
+        
+        // Show results for 5 seconds, then start new round
         setTimeout(() => {
-          coinFlipContract.startNewRound()
           setGamePhase("betting")
-        }, 2000) // 2 seconds to show results
+        }, 5000) // 5 seconds to show results and rewards
       }, 3000) // 3 seconds for flip animation
     }
 

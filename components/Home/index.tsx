@@ -80,23 +80,32 @@ export default function Home() {
   }
 
   useEffect(() => {
-    if (gamePhase === "results" && currentRound && !lastResult) {
-      const mockResult: CoinSide = Math.random() < 0.5 ? "heads" : "tails"
-      const isWinner = playerChoice === mockResult
-      const mockPayout = isWinner ? 1.9 : 0
-
-      setLastResult({
-        result: mockResult,
-        playerChoice,
-        isWinner,
-        payout: mockPayout,
-        totalPot: currentRound?.pot || 0,
-        winnersCount: isWinner ? 1 : 0,
-      })
+    if (gamePhase === "results" && !lastResult) {
+      // Get the last completed round for results
+      const pastRounds = coinFlipContract.getPastRounds(1)
+      const lastCompletedRound = pastRounds[0]
+      
+      if (lastCompletedRound && lastCompletedRound.result) {
+        const result = lastCompletedRound.result
+        const player = lastCompletedRound.players.find(p => p.address === playerAddress)
+        const isWinner = player ? player.choice === result : false
+        const winners = lastCompletedRound.winners || []
+        const payout = winners.length > 0 && isWinner ? 
+          (lastCompletedRound.pot * 0.95) / winners.length : 0 // 5% rake
+        
+        setLastResult({
+          result,
+          playerChoice: player?.choice,
+          isWinner,
+          payout,
+          totalPot: lastCompletedRound.pot,
+          winnersCount: winners.length,
+        })
+      }
     } else if (gamePhase === "betting") {
       setLastResult(null)
     }
-  }, [gamePhase, currentRound, playerChoice, lastResult])
+  }, [gamePhase, playerAddress, lastResult])
 
   const handlePlayAgain = () => {
     setLastResult(null)

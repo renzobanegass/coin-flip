@@ -12,69 +12,99 @@ interface CoinAnimationProps {
 export function CoinAnimation({ isFlipping, result, onAnimationComplete }: CoinAnimationProps) {
   const [animationPhase, setAnimationPhase] = useState<"idle" | "flipping" | "result">("idle")
   const [showSide, setShowSide] = useState<CoinSide>(result || "heads")
+  const [flipText, setFlipText] = useState<string>("HEADS")
 
   useEffect(() => {
     if (isFlipping) {
       setAnimationPhase("flipping")
 
-      // Show result after flip animation
+      // During flipping, alternate between HEADS and TAILS rapidly
+      const flipInterval = setInterval(() => {
+        setFlipText(prev => prev === "HEADS" ? "TAILS" : "HEADS")
+      }, 150)
+
+      // Show final result after flip animation
       const timer = setTimeout(() => {
+        clearInterval(flipInterval)
         setShowSide(result || "heads")
+        setFlipText((result || "heads").toUpperCase())
         setAnimationPhase("result")
         onAnimationComplete?.()
-      }, 2000) // 2 second flip animation
+      }, 3000) // 3 second flip animation
 
-      return () => clearTimeout(timer)
+      return () => {
+        clearInterval(flipInterval)
+        clearTimeout(timer)
+      }
     } else {
       setAnimationPhase("idle")
       if (result) {
         setShowSide(result)
+        setFlipText(result.toUpperCase())
       }
     }
   }, [isFlipping, result, onAnimationComplete])
 
   return (
-    <div className="flex flex-col items-center justify-center py-8 px-4 sm:py-12">
-      <div className="relative w-32 h-32 sm:w-40 sm:h-40">
+    <div className="flex flex-col items-center justify-center py-8 px-4 w-full">
+      {/* Main display area */}
+      <div className="relative w-full max-w-sm">
         <div
           className={`
-            w-full h-full rounded-full border-4 border-amber-400 shadow-lg
-            flex items-center justify-center text-4xl sm:text-5xl font-bold
-            transition-all duration-500 ease-in-out transform-gpu
-            ${isFlipping ? "animate-spin-flip" : ""}
-            ${showSide === "heads" ? "bg-gradient-to-br from-amber-300 to-amber-500 text-amber-800" : "bg-gradient-to-br from-cyan-300 to-cyan-500 text-cyan-800"}
+            w-full h-32 sm:h-40 md:h-48
+            flex items-center justify-center
+            rounded-2xl border-4 shadow-2xl
+            transition-all duration-300 ease-in-out
+            ${animationPhase === "flipping" ? "animate-bounce" : ""}
+            ${showSide === "heads" ? 
+              "bg-gradient-to-br from-amber-300 via-amber-400 to-amber-600 border-amber-500 text-amber-900" : 
+              "bg-gradient-to-br from-cyan-300 via-cyan-400 to-cyan-600 border-cyan-500 text-cyan-900"
+            }
           `}
-          style={{
-            animation: isFlipping ? "coinFlip 2s ease-in-out" : "none",
-          }}
         >
-          {showSide === "heads" ? "H" : "T"}
+          <div className={`
+            text-4xl sm:text-5xl md:text-6xl lg:text-7xl 
+            font-black tracking-wider drop-shadow-lg
+            ${animationPhase === "flipping" ? "animate-pulse scale-110" : ""}
+            transition-all duration-300
+          `}>
+            {animationPhase === "flipping" ? flipText : (showSide || "heads").toUpperCase()}
+          </div>
         </div>
       </div>
 
       {/* Status text */}
-      <div className="mt-4 sm:mt-6 text-center max-w-xs">
-        {animationPhase === "idle" && <p className="text-base sm:text-lg text-muted-foreground">Ready to flip...</p>}
+      <div className="mt-6 text-center max-w-xs">
+        {animationPhase === "idle" && (
+          <p className="text-lg sm:text-xl text-muted-foreground font-medium">
+            Ready to flip...
+          </p>
+        )}
         {animationPhase === "flipping" && (
-          <p className="text-lg sm:text-xl font-bold text-primary animate-pulse">Flipping coin...</p>
+          <div className="space-y-2">
+            <p className="text-xl sm:text-2xl font-bold text-primary animate-pulse">
+              Flipping...
+            </p>
+            <div className="flex justify-center">
+              <div className="flex space-x-1">
+                <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
+                <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+              </div>
+            </div>
+          </div>
         )}
         {animationPhase === "result" && result && (
-          <div className="space-y-1 sm:space-y-2">
-            <p className="text-xl sm:text-2xl font-bold text-primary">{result.toUpperCase()} WINS!</p>
-            <p className="text-sm sm:text-base text-muted-foreground">The coin landed on {result}</p>
+          <div className="space-y-2">
+            <p className="text-2xl sm:text-3xl font-bold text-primary">
+              {result.toUpperCase()}!
+            </p>
+            <p className="text-base sm:text-lg text-muted-foreground">
+              The coin landed on {result}
+            </p>
           </div>
         )}
       </div>
-
-      <style jsx>{`
-        @keyframes coinFlip {
-          0% { transform: rotateY(0deg) scale(1); }
-          25% { transform: rotateY(450deg) scale(1.1); }
-          50% { transform: rotateY(900deg) scale(1.2); }
-          75% { transform: rotateY(1350deg) scale(1.1); }
-          100% { transform: rotateY(1800deg) scale(1); }
-        }
-      `}</style>
     </div>
   )
 }

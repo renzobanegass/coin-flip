@@ -2,13 +2,7 @@ import { createEnv } from "@t3-oss/env-nextjs"
 import { z } from "zod"
 
 export const env = createEnv({
-  server: {
-    // Mock values for simplified implementation
-    NEYNAR_API_KEY: z.string().optional().default("mock-neynar-key"),
-    JWT_SECRET: z.string().optional().default("mock-jwt-secret-for-development"),
-    REDIS_URL: z.string().optional().default("mock-redis-url"),
-    REDIS_TOKEN: z.string().optional().default("mock-redis-token"),
-  },
+  server: {},
   client: {
     NEXT_PUBLIC_URL: z.string().optional().default("http://localhost:3000"),
     NEXT_PUBLIC_APP_ENV: z.enum(["development", "production"]).optional().default("development"),
